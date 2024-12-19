@@ -27,7 +27,7 @@ const Reports = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/products/getproducts');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
       setProductData(data);
       dispatch({
         type: "HIDE_LOADING",
@@ -46,7 +46,7 @@ const Reports = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/bills/getbills');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
       setBillsData(data);
       setFullBillsData(data);
       console.log(data);
@@ -201,7 +201,7 @@ const Reports = () => {
         type: "SHOW_LOADING",
       });
       message.success("Wait for Backup !");
-        const response = await axios.post("/api/userData/dataBackup", parsedStorage );
+        const response = await axios.post("https://pos-client-backend-oy6t.vercel.app/api/userData/dataBackup", parsedStorage );
 
         if (response.data !== "out dated") {
           window.location.href = "/reports";

@@ -13,7 +13,7 @@ function Logout({ collapsed }) {
 
     try {
       const {data} = await axios.post(`https://pos-admin-backend.vercel.app/api/users/userlogout/${userEmail}`);
-      await axios.delete(`/api/userAuth/deleteUser/${userEmail}`)
+      await axios.delete(`https://pos-client-backend-oy6t.vercel.app/api/userAuth/deleteUser/${userEmail}`)
       if (data === "User is not valid by admin") {
         localStorage.removeItem("user");
         message.error("This account is not valid by Admin");

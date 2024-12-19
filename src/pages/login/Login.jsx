@@ -30,7 +30,7 @@ const Login = () => {
       }else if (data.verification_code === 1){
         localStorage.setItem('user', data.userData.email);
         message.success(data.message);
-        const response = await axios.post('/api/userAuth/addUser', {userData: data.userData})
+        const response = await axios.post('https://pos-client-backend-oy6t.vercel.app/api/userAuth/addUser', {userData: data.userData})
         if (response.status === 200) {
           return navigate("/");
         }

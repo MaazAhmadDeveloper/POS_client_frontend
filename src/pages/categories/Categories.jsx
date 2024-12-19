@@ -22,7 +22,7 @@ function Categories(  ) {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/categories/getCategories');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/categories/getCategories');
       setFullProductData(data);
       // console.log(data);
 
@@ -38,7 +38,7 @@ function Categories(  ) {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/products/getproducts');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
       setGetAllProducts(data);
       console.log(data);
 
@@ -63,7 +63,7 @@ function Categories(  ) {
           type: "SHOW_LOADING",
         });
 
-        await axios.post('/api/categories/addCategories', value);
+        await axios.post('https://pos-client-backend-oy6t.vercel.app/api/categories/addCategories', value);
         message.success("Product Added Successfully!")
         getAllCategories();
         setPopModal(false);
@@ -83,7 +83,7 @@ function Categories(  ) {
         dispatch({
           type: "SHOW_LOADING",
         });
-       await axios.put('/api/categories/updateCategories', {...value, productId:editProduct._id});
+       await axios.put('https://pos-client-backend-oy6t.vercel.app/api/categories/updateCategories', {...value, productId:editProduct._id});
         message.success("Product Updated Successfully!")
         getAllCategories();
 

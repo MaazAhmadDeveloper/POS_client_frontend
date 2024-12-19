@@ -23,8 +23,8 @@ function Mappedcard( {productObj, getAllCategories, setEditProduct, setPopModal,
             type: "SHOW_LOADING",
           });
           await Promise.all([
-            axios.put('/api/categories/deleteCategories', { productId: idCategory, imagePath }),
-            axios.post('/api/products/deleteproducts', { productsIdArray:productsIdArray }),
+            axios.put('https://pos-client-backend-oy6t.vercel.app/api/categories/deleteCategories', { productId: idCategory, imagePath }),
+            axios.post('https://pos-client-backend-oy6t.vercel.app/api/products/deleteproducts', { productsIdArray:productsIdArray }),
           ]);
           message.success("Product Deleted Successfully!")
           getAllCategories();

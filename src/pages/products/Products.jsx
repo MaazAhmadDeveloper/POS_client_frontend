@@ -25,7 +25,7 @@ const Products = () => {
   const getAllProducts = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      const { data } = await axios.get('/api/products/getproducts');
+      const { data } = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
       setFullProductData(data);
       setProductData(data);
       dispatch({ type: "HIDE_LOADING" });
@@ -38,7 +38,7 @@ const Products = () => {
   const getAllCategories = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      const { data } = await axios.get('/api/categories/getCategories');
+      const { data } = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/categories/getCategories');
       setAllCategories(data);
       dispatch({ type: "HIDE_LOADING" });
     } catch (error) {
@@ -63,7 +63,7 @@ const Products = () => {
   const handlerDelete = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      await axios.post('/api/products/deleteproducts', { productId: recordToDelete._id, imagePath:recordToDelete.image });
+      await axios.post('https://pos-client-backend-oy6t.vercel.app/api/products/deleteproducts', { productId: recordToDelete._id, imagePath:recordToDelete.image });
       message.success("Product Deleted Successfully!");
       getAllProducts();
       setPopModal(false);
@@ -123,7 +123,7 @@ const Products = () => {
           type: "SHOW_LOADING",
         });
         // console.log(value);
-        await axios.post('/api/products/addproducts', value);
+        await axios.post('https://pos-client-backend-oy6t.vercel.app/api/products/addproducts', value);
         message.success("Product Added Successfully!")
         getAllProducts();
         setPopModal(false);
@@ -143,7 +143,7 @@ const Products = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-       await axios.put('/api/products/updateproducts', {...value, productId:editProduct._id});
+       await axios.put('https://pos-client-backend-oy6t.vercel.app/api/products/updateproducts', {...value, productId:editProduct._id});
         message.success("Product Updated Successfully!")
         getAllProducts();
 

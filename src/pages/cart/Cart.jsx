@@ -96,7 +96,7 @@ const Cart = () => {
           dispatch({
             type: "SHOW_LOADING",
           });
-          const {data} = await axios.get('/api/bills/getbills');
+          const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
           setBillsDataNumbers(data.length +1000);
           dispatch({
             type: "HIDE_LOADING",
@@ -199,7 +199,7 @@ useEffect(() => {
             setSelectedInvoice(newObject)
             // console.log(newObject);
 
-            await axios.post("/api/bills/addbills", newObject);
+            await axios.post("https://pos-client-backend-oy6t.vercel.app/api/bills/addbills", newObject);
             message.success("Bill Generated!");
             localStorage.setItem('orderNumber', (orderNumber + 1).toString());  
 

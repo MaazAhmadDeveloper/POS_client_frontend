@@ -25,7 +25,7 @@ const Home = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-        const { data } = await axios.get("/api/products/getproducts");
+        const { data } = await axios.get("https://pos-client-backend-oy6t.vercel.app/api/products/getproducts");
         // console.log(data);
         setFullProductData(data);
         setProductData(data);
@@ -44,12 +44,12 @@ const Home = () => {
 
   const getAllBills = async () => {
     try {
-      const { data } = await axios.get("/api/bills/getbills");
+      const { data } = await axios.get("https://pos-client-backend-oy6t.vercel.app/api/bills/getbills");
       setBillsData(data);
       if (data.length === 0) {
         const getAllDataFromBackup = async () => {
           message.success("Data Coming from Cloud Server !");
-          await axios.get("/api/userData/getdataBackup");
+          await axios.get("https://pos-client-backend-oy6t.vercel.app/api/userData/getdataBackup");
         };
         getAllDataFromBackup();
       }

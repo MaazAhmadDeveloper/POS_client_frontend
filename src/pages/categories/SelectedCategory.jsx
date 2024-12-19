@@ -30,7 +30,7 @@ function SelectedCategory( {selectedCategory, setSelectedCategory} ) {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/products/getproducts');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
       setProductData(data.filter((obj) => (obj.category.includes(selectedCategory))));
 
       dispatch({

@@ -12,7 +12,7 @@ function SlidingCatagories( { selectedCategory, setSelectedCategory} ) {
                     dispatch({
                       type: "SHOW_LOADING",
                     });
-                    const {data} = await axios.get('/api/categories/getCategories');
+                    const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/categories/getCategories');
                     setCategories(data);
                     // console.log(data);
               

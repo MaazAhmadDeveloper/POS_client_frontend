@@ -21,7 +21,7 @@ const InvoicesRoute = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('/api/bills/getbills');
+      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
       setBillsData(data);
       setFullBillsData(data);
       console.log(data);
