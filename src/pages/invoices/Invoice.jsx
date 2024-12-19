@@ -77,6 +77,14 @@ useEffect(() => {
                     <span>Customer Address:</span>
                     <span><b>{selectedBill.customerAddress}</b></span>
                 </div>}
+                { selectedBill.servicetType !== "-----" &&<div className="group">
+                    <span>Customer Address:</span>
+                    <span><b>{selectedBill.servicetType}</b></span>
+                </div>}
+                { selectedBill.handler !== "-----" &&<div className="group">
+                    <span>Customer Address:</span>
+                    <span><b>{selectedBill.handler}</b></span>
+                </div>}
                 <div className="group">
                     <span>Payment Method:</span>
                     <span><b>{selectedBill.paymentMethod}</b></span>
@@ -126,6 +134,14 @@ useEffect(() => {
                     <span>Customer Address:</span>
                     <span><b>{selectedBill.customerAddress}</b></span>
                 </div>}
+                { selectedBill.servicetType !== "-----" &&<div className="group">
+                    <span>Customer Address:</span>
+                    <span><b>{selectedBill.servicetType}</b></span>
+                </div>}
+                { selectedBill.handler !== "-----" &&<div className="group">
+                    <span>Customer Address:</span>
+                    <span><b>{selectedBill.handler}</b></span>
+                </div>}
                 <div className="group">
                     <span>Payment Method:</span>
                     <span><b>{selectedBill.paymentMethod}</b></span>
@@ -149,6 +165,13 @@ useEffect(() => {
                         <h3><b className="total">Rs {selectedBill.totalAmount}</b></h3>
                     </div>
                 </div>
+            
+                {/* For Chef */}
+            <div className="cardHeader">
+                <h2 className="logo">For Chef</h2>
+            </div>  
+            <h4 className="YourOrderText">Order Number: {selectedBill.orderNumber}</h4>
+            <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />          
                 
             </div>
 

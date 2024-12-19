@@ -93,7 +93,7 @@ const Products = () => {
     { 
       title: "Image", 
       dataIndex: "image", 
-      render: (image, record) => <img src={`http://localhost:5000${image}`} alt={record.name} height={50} width={90} style={{ borderRadius: 10, cursor:"pointer" }} />
+      render: (image, record) => <img src={`${image}`} alt={record.name} height={50} width={90} style={{ borderRadius: 10, cursor:"pointer" }} />
     },
     { title: "Category", dataIndex: "category" },
     { title: "Price", dataIndex: "price" },
@@ -110,72 +110,61 @@ const Products = () => {
   ];
 
   const handlerSubmit = async (value) => {
-    if (!imageFile) {
-      message.error("Please upload an image.");
-      return;
-    }
+
     for (let key in value) {
-      // Skip the image field during validation
-      if (key === 'image') {
-        continue;
-      }
-    
       if (value[key] === null || value[key] === undefined) {
         return message.error("Full fill the form");
       }
     }
 
-    if (editProduct === null) {
+    if(editProduct === null) {
       try {
-        dispatch({ type: "SHOW_LOADING" });
-        
-        // Prepare the form data with the image
-        const formData = new FormData();
-        formData.append('name', value.name);
-        formData.append('category', value.category);
-        formData.append('price', value.price);
-        if (imageFile) {
-          formData.append('image', imageFile);
-        }
-
-        await axios.post('/api/products/addproducts', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        message.success("Product Added Successfully!");
+        dispatch({
+          type: "SHOW_LOADING",
+        });
+        // console.log(value);
+        await axios.post('/api/products/addproducts', value);
+        message.success("Product Added Successfully!")
         getAllProducts();
         setPopModal(false);
-        dispatch({ type: "HIDE_LOADING" });
-      } catch (error) {
-        dispatch({ type: "HIDE_LOADING" });
-        message.error("Error!");
+        dispatch({
+          type: "HIDE_LOADING",
+        });
+        
+      } catch(error) {
+        dispatch({
+          type: "HIDE_LOADING",
+        });
+        message.error("Error!")
         console.log(error);
       }
     } else {
       try {
-        dispatch({ type: "SHOW_LOADING" });
-        
-        const formData = new FormData();
-        formData.append('name', value.name);
-        formData.append('category', value.category);
-        formData.append('price', value.price);
-        formData.append('productId', editProduct._id);
-        if (imageFile) {
-          formData.append('image', imageFile); // Include the updated image
-        }
-
-        await axios.put('/api/products/updateproducts', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        message.success("Product Updated Successfully!");
+        dispatch({
+          type: "SHOW_LOADING",
+        });
+       await axios.put('/api/products/updateproducts', {...value, productId:editProduct._id});
+        message.success("Product Updated Successfully!")
         getAllProducts();
+
         setPopModal(false);
-        dispatch({ type: "HIDE_LOADING" });
+        dispatch({
+          type: "HIDE_LOADING",
+        });
+
         setEditProduct(null);
-      } catch (error) {
-        dispatch({ type: "HIDE_LOADING" });
-        message.error("Error!");
+      } catch(error) {
+        dispatch({
+          type: "HIDE_LOADING",
+        });
+        message.error("Error!")
         console.log(error);
       }
     }
-  };
+  }
 
-  const secretConfirmHandle = () => {
+  const secretConfirmHandle = (e) => {
+    e.preventDefault();
     if (secretInputValue.toString() === "123456") {
       setSecretAllow(true);
       message.success("Your Product Sections Unlocked");
@@ -213,9 +202,9 @@ const Products = () => {
           ))}
         </Select>
 
-        {secretAllow ? <UnlockOutlined style={{ marginLeft: "100px" }} onClick={() => { setSecretAllow(false); setSecretInputValue("") }} /> : <LockOutlined style={{ marginLeft: "100px" }} onClick={() => setSecretModal(true)} />}
+        {secretAllow ? <UnlockOutlined style={{ marginLeft: "330px" }} onClick={() => { setSecretAllow(false); setSecretInputValue("") }} /> : <LockOutlined style={{ marginLeft: "330px" }} onClick={() => setSecretModal(true)} />}
         
-        <Button className='add-new' style={{ position: "absolute", right: -50, zIndex: "1000", top: 15 }} onClick={() => secretAllow ? setPopModal(true) : setSecretModal(true)}>Add New</Button>
+        <Button className='add-new' style={{ position: "absolute", right: -50, zIndex: "1000", top: 15 }} onClick={() => secretAllow ? setPopModal(true) : setSecretModal(true)}>Add Product</Button>
       </div>
       <Table dataSource={productData} columns={columns} bordered />
 
@@ -233,9 +222,12 @@ const Products = () => {
               </Select>
             </FormItem>
             <FormItem name="price" label="Price">
-              <Input />
+              <Input type='number' />
             </FormItem>
-            <FormItem name="image" label="Image">
+            <FormItem name="image" label="Image URL">
+              <Input/>
+            </FormItem>
+            {/* <FormItem name="image" label="Image">
               {editProduct && editProduct.image && (
                 <div>
                   <img src={`http://localhost:5000${editProduct.image}`} alt="Current" width="150" />
@@ -243,7 +235,7 @@ const Products = () => {
                 </div>
               )}
               <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
-            </FormItem>
+            </FormItem> */}
             <div className="form-btn-add">
               <Button htmlType='submit' className='add-new'>Save</Button>
             </div>
@@ -252,6 +244,8 @@ const Products = () => {
       }
 
       <Modal title={"Secret Key "} visible={secretModal} onCancel={() => { setSecretModal(false); setSecretInputValue("") }} footer={false}>
+        <form onSubmit={secretConfirmHandle}>
+
         <h3>Enter Secret Key here</h3>
         <input
           type="password"
@@ -260,11 +254,12 @@ const Products = () => {
           style={{ marginBottom: 50 }}
           onChange={(e) => setSecretInputValue(e.target.value)}
           value={secretInputValue}
-        />
+          />
         <div style={{ display: "flex" }}>
           <Button className='cancel-category' onClick={() => { setSecretModal(false); setSecretInputValue("") }}>Cancel</Button>
-          <Button className='delete-category' onClick={secretConfirmHandle}>Confirm</Button>
+          <Button className='delete-category' type='submit'>Confirm</Button>
         </div>
+        </form>
       </Modal>
 
       <Modal title={"Delete Product "} visible={deleteModel} onCancel={() => { setDeleteModel(false) }} footer={false}>

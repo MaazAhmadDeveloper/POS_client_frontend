@@ -47,7 +47,7 @@ export function ProtectedRouter({ children }) {
       }
 
       try {
-        const { data } = await axios.get(`http://localhost:5000/api/userAuth/checkUser/${storage}`);
+        const { data } = await axios.get(`https://pos-client-backend-oy6t.vercel.app/api/userAuth/checkUser/${storage}`);
 
         if (data.verification_code === 0 || data.verification_code === 2) {
           message.error(data.message);

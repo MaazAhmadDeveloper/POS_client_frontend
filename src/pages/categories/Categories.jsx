@@ -57,23 +57,13 @@ function Categories(  ) {
 
   const handlerSubmit = async (value) => {
     // console.log(value);
-    if (!imageFile) {
-      message.error("Please upload an image.");
-      return;
-    }
     if(editProduct === null) {
       try {
         dispatch({
           type: "SHOW_LOADING",
         });
-        // Prepare the form data with the image
-        const formData = new FormData();
-        formData.append('category', value.category);
-        if (imageFile) {
-          formData.append('image', imageFile);
-        }
 
-        await axios.post('/api/categories/addCategories', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
+        await axios.post('/api/categories/addCategories', value);
         message.success("Product Added Successfully!")
         getAllCategories();
         setPopModal(false);
@@ -93,18 +83,8 @@ function Categories(  ) {
         dispatch({
           type: "SHOW_LOADING",
         });
-      //  await axios.put('/api/categories/updateCategories', {...value, productId:editProduct._id});
-      //   message.success("Product Updated Successfully!")
-        // Prepare the form data with the image
-        const formData = new FormData();
-        formData.append('productId', editProduct._id);
-        formData.append('category', value.category);
-        if (imageFile) {
-          formData.append('image', imageFile);
-        }
-
-        await axios.put('/api/categories/updateCategories', formData, { headers: { 'Content-Type': 'multipart/form-data' } });
-        message.success("Product Added Successfully!")        
+       await axios.put('/api/categories/updateCategories', {...value, productId:editProduct._id});
+        message.success("Product Updated Successfully!")
         getAllCategories();
 
         setPopModal(false);
@@ -167,14 +147,8 @@ function Categories(  ) {
                 {/* <FormItem name="image" label="Image URL">
                   <Input/>
                 </FormItem> */}
-                <FormItem name="image" label="Image">
-                  {editProduct && editProduct.image && (
-                    <div>
-                      <img src={`http://localhost:5000${editProduct.image}`} alt="Current" width="150" />
-                      <p>Current Image</p>
-                    </div>
-                  )}
-                  <Input type="file" accept="image/*" onChange={(e) => setImageFile(e.target.files[0])} />
+                <FormItem name="image" label="Image URL">
+                  <Input/>
                 </FormItem>
                 <div className="form-btn-add">
                   <Button htmlType='submit' className='add-new'>Add</Button>

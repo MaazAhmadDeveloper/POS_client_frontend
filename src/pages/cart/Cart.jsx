@@ -147,17 +147,49 @@ useEffect(() => {
     document.removeEventListener('keypress', handleKeyPress);
   };
 }, [enterPressCount, setBillPopUp]);
+// const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9).getTime(); // 9 AM today
+
+useEffect(() => {
+  const initializeOrderNumber = () => {
+    const now = new Date();
+    const currentTime = now.getTime();
+    const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9).getTime(); 
+    console.log("resetTime: "+ resetTime);
+    // const resetTime = new Date(currentTime + 2 * 60 * 1000).getTime();
+    const lastResetTime = localStorage.getItem('lastResetTime');
+    let orderNumber = localStorage.getItem('orderNumber');
+
+    // Parse lastResetTime to a Date object if it exists
+    const lastResetDate = lastResetTime ? new Date(Number(lastResetTime)).toDateString() : null;
+
+    if (!lastResetTime || (now.toDateString() !== lastResetDate && currentTime >= resetTime)) {
+      orderNumber = 1; // Reset order number
+      localStorage.setItem('orderNumber', orderNumber);
+      localStorage.setItem('lastResetTime', currentTime.toString()); // Save current time as the last reset time
+    } else if (!orderNumber) {
+      // If `orderNumber` is not set, initialize it to 1
+      orderNumber = 1;
+      localStorage.setItem('orderNumber', orderNumber);
+    }
+  };
+
+  initializeOrderNumber();
+}, []);
+
 
     const handlerSubmit = async (value) => {
       // console.log(value);
+      let orderNumber = parseInt(localStorage.getItem('orderNumber'), 10);
         try {
             const newObject = {
-              orderNumber: "1",
+              orderNumber: orderNumber.toString(),
               billNumber: billDataNumbers,
               customerAddress: value.customerAddress !== undefined && value.customerAddress !== null && value.customerAddress !== "" && value.customerAddress !== " " ? value.customerAddress : "-----",
               customerName: value.customerName !== undefined && value.customerName !== null && value.customerName !== "" && value.customerName !== " " ? value.customerName.toString() : "-----",
               customerPhone: value.customerPhone !== undefined && value.customerPhone !== null && value.customerPhone !== "" && value.customerPhone !== " " ? value.customerPhone.toString() : "-----",
               paymentMethod: value.paymentMethod !== undefined && value.paymentMethod !== null && value.paymentMethod !== "" && value.paymentMethod !== " " ? value.paymentMethod : "Cash",
+              servicetType: value.servicetType !== undefined && value.servicetType !== null && value.servicetType !== "" && value.servicetType !== " " ? value.servicetType : "Dinning",
+              handler: value.handler !== undefined && value.handler !== null && value.handler !== "" && value.handler !== " " ? value.handler : "Waiter",
               cartItems,
               subTotal,
               discount: Number(discountValue),
@@ -169,6 +201,7 @@ useEffect(() => {
 
             await axios.post("/api/bills/addbills", newObject);
             message.success("Bill Generated!");
+            localStorage.setItem('orderNumber', (orderNumber + 1).toString());  
 
             dispatch({
               type: "EMPTY_CART", 
@@ -216,6 +249,19 @@ useEffect(() => {
                 placeholder='(Optional) Discount' 
                 onChange={ (e)=>{setDiscountValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
                 value={discountValue} />
+            </FormItem>
+            <FormItem name="servicetType" label="Service Type">
+              <Select defaultValue="Dinning" style={{ width: "100%"}}>
+                <Select.Option value="dinning">Dinning</Select.Option>
+                <Select.Option value="takeaway">Takeaway</Select.Option>
+                <Select.Option value="delivery">Delivery</Select.Option>
+              </Select>
+            </FormItem>
+            <FormItem name="handler" label="Handler">
+              <Select defaultValue="Waiter" style={{ width: "100%"}}>
+                <Select.Option value="waiter">Waiter</Select.Option>
+                <Select.Option value="deliveryboy">Delivery Boy</Select.Option>
+              </Select>
             </FormItem>
             <FormItem name="paymentMethod" label="Payment Method">
               <Select defaultValue="Cash" style={{ width: "100%"}}>

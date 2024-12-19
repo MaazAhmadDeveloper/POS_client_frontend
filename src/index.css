@@ -479,3 +479,26 @@ body::-webkit-scrollbar-thumb {
   background-color: white  !important;
   color: #001e28 !important;
 }
+@page {
+  size: 80mm auto; /* Width fixed, height dynamic */
+  margin: 0; /* No margins to fit the content */
+}
+@media print {
+  .card {
+      width: 80mm ; /* Typical width for POS receipts */
+      font-size: 12px; /* Adjust font size as needed */
+      margin: 0 auto; /* Center content */
+  }
+  
+  .cardHeader, .cardBody, .footerCardTotal, .footerThanks {
+      padding: 5px; /* Adjust padding for compactness */
+  }
+
+  table {
+      width: 100%; /* Ensure tables fit the card width */
+  }
+
+  .cardHeader h2 {
+      font-size: 14px; /* Adjust title font size */
+  }
+}
