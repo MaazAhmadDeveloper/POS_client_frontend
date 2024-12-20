@@ -21,6 +21,7 @@ const Cart = () => {
     const [deleteModal, setDeleteModal] = useState(false);
     const [confirmDeleteData, setConfirmDeleteData] = useState();
     const [invoiceNumber, setiInvoiceNumber] = useState(0);
+    const [serviceType, setServiceType] = useState("dinning");
 
     const dispatch = useDispatch();
 
@@ -250,17 +251,41 @@ useEffect(() => {
                 onChange={ (e)=>{setDiscountValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
                 value={discountValue} />
             </FormItem>
+            {/* no this dropdown show if servicetType is take away */}
             <FormItem name="servicetType" label="Service Type">
-              <Select defaultValue="Dinning" style={{ width: "100%"}}>
+              <Select
+                defaultValue="Dinning"
+                style={{ width: "100%" }}
+                onChange={(value) => setServiceType(value)} // Track the selected service type
+              >
                 <Select.Option value="dinning">Dinning</Select.Option>
                 <Select.Option value="takeaway">Takeaway</Select.Option>
                 <Select.Option value="delivery">Delivery</Select.Option>
               </Select>
             </FormItem>
             <FormItem name="handler" label="Handler">
-              <Select defaultValue="Waiter" style={{ width: "100%"}}>
-                <Select.Option value="waiter">Waiter</Select.Option>
-                <Select.Option value="deliveryboy">Delivery Boy</Select.Option>
+              <Select defaultValue={'Handler'} style={{ width: "100%" }}>
+                {serviceType === "dinning" && (
+                  <>
+                    <Select.Option value="waiter1">Waiter 1</Select.Option>
+                    <Select.Option value="waiter2">Waiter 2</Select.Option>
+                    <Select.Option value="waiter3">Waiter 3</Select.Option>
+                  </>
+                )}
+                {serviceType === "delivery" && (
+                  <>
+                    <Select.Option value="deliveryboy1">Delivery Boy 1</Select.Option>
+                    <Select.Option value="deliveryboy2">Delivery Boy 2</Select.Option>
+                    <Select.Option value="deliveryboy3">Delivery Boy 3</Select.Option>
+                  </>
+                )}
+                {serviceType === "takeaway" && (
+                  <>
+                    <Select.Option value="counterstaff1">Counter Staff 1</Select.Option>
+                    <Select.Option value="counterstaff2">Counter Staff 2</Select.Option>
+                    <Select.Option value="counterstaff3">Counter Staff 3</Select.Option>
+                  </>
+                )}
               </Select>
             </FormItem>
             <FormItem name="paymentMethod" label="Payment Method">
