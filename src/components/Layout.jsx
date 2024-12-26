@@ -40,7 +40,8 @@ const LayoutApp = ({children, headerInput, categories}) => {
       {loading && <Spinner />}
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
-            <h2 className="logo-title">Karachi POS</h2>
+            {/* <h2 className="logo-title">Karachi POS</h2> */}
+            <img className='logo-img' src="/pos_layout.jpg" alt="branding logo" />
         </div>
         <Menu theme="dark" mode="inline" defaultSelectedKeys={window.location.pathname}>
             <Menu.Item key='/' icon={<HomeOutlined />}>
