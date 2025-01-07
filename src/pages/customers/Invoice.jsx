@@ -55,7 +55,7 @@ useEffect(() => {
         <Modal title="Invoice Details" width={400} pagination={false} visible={popModal} onCancel={() => setPopModal(false)} footer={false}>
 
           <div className="card" ref={componentRef}>
-            {/* <div className="cardHeader">
+            <div className="cardHeader">
                 <h2 className="logo">MP POS</h2>
                 <span>Number: <b>+92300000000</b></span>
                 <span>Address: <b> ABCD, EFGH, IJKL</b></span>
@@ -110,17 +110,18 @@ useEffect(() => {
                 </div>
                 <div className="footerThanks">
                     <span>Thank You for buying from us</span>
-                </div> */}
+                </div>
                 
                 {/* For shop */}
             <div className="cardHeader">
-                <h2 className="logo">For Shop &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>
+                <h2 className="logo">For Shop</h2>
+
             </div>
             <div className="cardBody">
-            {/* <div className="group">
+            <div className="group">
                     <span>Bill Number:</span>
                     <span><b>{selectedBill.billNumber}</b></span>
-                </div> */}
+                </div>
             { selectedBill.customerName !== "-----" && <div className="group">
                     <span>Customer Name:</span>
                     <span><b>{selectedBill.customerName}</b></span>
@@ -134,11 +135,11 @@ useEffect(() => {
                     <span><b>{selectedBill.customerAddress}</b></span>
                 </div>}
                 { selectedBill.servicetType !== "-----" &&<div className="group">
-                    <span>Order Type:</span>
+                    <span>Customer Address:</span>
                     <span><b>{selectedBill.servicetType}</b></span>
                 </div>}
                 { selectedBill.handler !== "-----" &&<div className="group">
-                    <span>Order Handler:</span>
+                    <span>Customer Address:</span>
                     <span><b>{selectedBill.handler}</b></span>
                 </div>}
                 <div className="group">
@@ -151,27 +152,25 @@ useEffect(() => {
                 </div>
             </div>
             
+                <h4 className="YourOrderText">Order Number: {selectedBill.orderNumber}</h4>
             <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />
 
                 <div className="footerCardTotal">
                     <div className="group">
-                        <p >Service Tax:</p>
-                        <p><b className="total">+ {selectedBill.serviceTax}%</b></p>
+                        <h3 >Discount:</h3>
+                        <h3><b className="total">- Rs {selectedBill.discount}</b></h3>
                     </div>
                     <div className="group">
-                        <p >Discount:</p>
-                        <p><b className="total">- Rs {selectedBill.discount}</b></p>
-                    </div>
-                    <div className="group">
-                        <p >Total:</p>
-                        <p><b className="total">Rs {selectedBill.totalAmount}</b></p>
+                        <h3 >Total:</h3>
+                        <h3><b className="total">Rs {selectedBill.totalAmount}</b></h3>
                     </div>
                 </div>
             
                 {/* For Chef */}
             <div className="cardHeader">
-                <h2 className="logo">For Chef &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>
+                <h2 className="logo">For Chef</h2>
             </div>  
+            <h4 className="YourOrderText">Order Number: {selectedBill.orderNumber}</h4>
             <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />          
                 
             </div>

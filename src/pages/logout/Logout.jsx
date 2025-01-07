@@ -30,7 +30,7 @@ function Logout({ collapsed }) {
 
   return (
     <div>
-        <LogoutOutlined style={{ color: '#001e28', margin: "15px 20px 0px 0px"}} onClick={()=> setLogoutModal(true) } />
+        <LogoutOutlined style={{ color: '#001e28', margin: "15px 60px 0px 0px"}} onClick={()=> setLogoutModal(true) } />
 
       <Modal title="Logout" visible={logoutModal} onCancel={() => setLogoutModal(false) } footer={false}>
           <h3 style={{marginBottom: 50}}>Are you sure to logout</h3>

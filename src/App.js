@@ -11,6 +11,7 @@ import Categories from "./pages/categories/Categories"
 import PageNotFound from './pages/404/PageNotFound';
 import axios from 'axios';
 import { message } from 'antd';
+import Customer from './pages/customers/Customer';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
           <Route path="/cart" element={<ProtectedRouter> <Cart /> </ProtectedRouter>} />
           <Route path="/invoice" element={<ProtectedRouter> <InvoicesRoute /> </ProtectedRouter>} />
           <Route path="/categories" element={<ProtectedRouter> <Categories /> </ProtectedRouter>} />
+          <Route path="/customer-detail" element={<ProtectedRouter> <Customer /> </ProtectedRouter>} />
           <Route path="/reports" element={<ProtectedRouter> <Reports /> </ProtectedRouter>} />
           <Route path="/login" element={<Login />} />
           <Route path="/*" element={<PageNotFound />} />

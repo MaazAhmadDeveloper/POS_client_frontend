@@ -148,7 +148,7 @@ function Categories(  ) {
                   <Input/>
                 </FormItem> */}
                 <FormItem name="image" label="Image URL">
-                  <Input/>
+                  <Input placeholder='Optional' />
                 </FormItem>
                 <div className="form-btn-add">
                   <Button htmlType='submit' className='add-new'>Add</Button>

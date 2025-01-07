@@ -9,7 +9,8 @@ import {
   LogoutOutlined,
   ShoppingCartOutlined,
   SnippetsOutlined,
-  BranchesOutlined
+  BranchesOutlined,
+  ContactsOutlined
 } from '@ant-design/icons';
 import './layout.css';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -52,6 +53,9 @@ const LayoutApp = ({children, headerInput, categories}) => {
             </Menu.Item>
             <Menu.Item key="/categories" icon={<BranchesOutlined />}>
                 <Link to="/categories">Categories</Link>
+            </Menu.Item>
+            <Menu.Item key='/customer-detail' icon={<ContactsOutlined />}>
+                <Link to="/customer-detail">Customers</Link>
             </Menu.Item>
             <Menu.Item key='/invoice' icon={<MoneyCollectOutlined />}>
                 <Link to="/invoice">Invoices</Link>

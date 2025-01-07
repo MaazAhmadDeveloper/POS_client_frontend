@@ -17,6 +17,7 @@ const Cart = () => {
     const [selectedInvoice, setSelectedInvoice] = useState([]);
     const [enterPressCount, setEnterPressCount] = useState(0);
     const [discountValue, setDiscountValue] = useState(0);
+    const [serviceTaxValue, setServiceTaxValue] = useState(10);
     const [invoicepopModal, setInvoicePopModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
     const [confirmDeleteData, setConfirmDeleteData] = useState();
@@ -174,7 +175,46 @@ useEffect(() => {
     }
   };
 
-  initializeOrderNumber();
+initializeOrderNumber();
+
+function isWithinAllowedTime() {
+  const now = new Date();
+  const currentHour = now.getHours();
+
+  return currentHour >= 9 || currentHour < 3;
+}
+
+// function resetCounterIfNeeded() {
+//   const now = new Date();
+//   const currentHour = now.getHours();
+//   const currentDate = now.toDateString();
+
+//   const lastResetDate = localStorage.getItem('lastResetDate');
+
+//   if (currentHour < 9 && lastResetDate !== currentDate) {
+//       localStorage.setItem('counter', '1'); 
+//       localStorage.setItem('lastResetDate', currentDate); 
+//       console.log("Counter reset at 3 AM:", 1);
+//   }
+// }
+// function updateCounter() {
+
+//   resetCounterIfNeeded();
+
+//   let counter = parseInt(localStorage.getItem('counter') || '0', 10);
+
+//   if (isWithinAllowedTime()) {
+//       // Increment counter if within allowed time
+//       counter++;
+//       localStorage.setItem('counter', counter.toString());
+//   } else {
+//       // If outside allowed time and counter is 0, start from 1
+//       if (counter === 0) {
+//           counter = 1;
+//           localStorage.setItem('counter', counter.toString());
+//       }
+//   }
+// }
 }, []);
 
 
@@ -191,10 +231,11 @@ useEffect(() => {
               paymentMethod: value.paymentMethod !== undefined && value.paymentMethod !== null && value.paymentMethod !== "" && value.paymentMethod !== " " ? value.paymentMethod : "Cash",
               servicetType: value.servicetType !== undefined && value.servicetType !== null && value.servicetType !== "" && value.servicetType !== " " ? value.servicetType : "Dinning",
               handler: value.handler !== undefined && value.handler !== null && value.handler !== "" && value.handler !== " " ? value.handler : "Waiter",
+              serviceTax: value.serviceTax !== undefined && value.serviceTax !== null && value.serviceTax !== "" && value.serviceTax !== " " ? value.serviceTax : 0,
               cartItems,
               subTotal,
               discount: Number(discountValue),
-              totalAmount: Number(Number(subTotal) - discountValue),
+              totalAmount: totalAmountCalc(),
               // userId: JSON.parse(localStorage.getItem("auth"))._id
             }
             setSelectedInvoice(newObject)
@@ -225,6 +266,12 @@ useEffect(() => {
       }, 100);
     }
 
+    const totalAmountCalc = ()=>{
+      const total = (subTotal * (serviceTaxValue / 100)) + subTotal;
+      const finalTotal = (Number(total) - discountValue); 
+      return (finalTotal).toFixed(2);
+    }
+
   return (
     <Layout>
       <h2>Cart</h2>
@@ -234,7 +281,7 @@ useEffect(() => {
         <Button onClick={() => cartItems.length !==0 ? createInvoiceClickHandle() : message.error("Your Cart is empty")} className='add-new'>Create Invoice</Button>
       </div>
       <Modal title="Create Invoice" visible={billPopUp} onCancel={() => setBillPopUp(false) } footer={false}>
-        <Form id='generateInvoiveform' layout='vertical' onFinish={handlerSubmit}>
+        <Form id='generateInvoiveform' layout='vertical' onFinish={handlerSubmit}   initialValues={{serviceTax: serviceTaxValue,}}>
             <FormItem name="customerName" label="Customer Name">
               <Input placeholder='(Optional)' ref={nameInputRef}/>
             </FormItem>
@@ -248,8 +295,16 @@ useEffect(() => {
               <Input 
                 type='number' 
                 placeholder='(Optional) Discount' 
+                onWheel={(e) => e.target.blur()}
                 onChange={ (e)=>{setDiscountValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
                 value={discountValue} />
+            </FormItem>
+            <FormItem name="serviceTax" label="Service Tax (%age)">
+              <Input 
+                type='number' 
+                onWheel={(e) => e.target.blur()}
+                onChange={ (e)=>{setServiceTaxValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
+                value={serviceTaxValue} />
             </FormItem>
             {/* no this dropdown show if servicetType is take away */}
             <FormItem name="servicetType" label="Service Type">
@@ -296,8 +351,9 @@ useEffect(() => {
             </FormItem>
             <div className="total">
                 <span>SubTotal: Rs {(subTotal.toFixed(2) )}</span><br />
-                <span>Discount: Rs {discountValue} </span>
-                <h3>Total: Rs {(Number(subTotal) - discountValue).toFixed(2)}</h3>
+                <span>Discount: Rs {discountValue} </span><br />
+                <span>Service Tax: {serviceTaxValue}% </span>
+                <h3>Total: Rs {totalAmountCalc()}</h3>
             </div>
             <div className="form-btn-add">
               <Button id='submitButton' htmlType='submit' className='add-new' >Generate Invoice</Button>

@@ -129,6 +129,7 @@ body::-webkit-scrollbar-thumb {
   cursor: pointer;
   transition: all 0.5s;
   margin-left: 30px;
+  margin-right: 5px;
 }
 
 .cart-edit.eye {
@@ -278,7 +279,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cardBody {
-  margin-top: 30px;
+  margin-top: 10px;
 }
 
 .cardBody .group {
@@ -316,13 +317,17 @@ body::-webkit-scrollbar-thumb {
 
 .footerCardTotal {
   width: 200px;
-  margin: 25px 0 0 auto;
+  margin: 8px 0 0 auto;
 }
 
 .footerCardTotal .group {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+.footerCardTotal .group p {
+  font-size: 16px;
+  margin: 0;
 }
 
 .footerThanks {
@@ -480,6 +485,22 @@ body::-webkit-scrollbar-thumb {
 .upload-confirm:hover{
   background-color: white  !important;
   color: #001e28 !important;
+}
+.product-price-input{
+  width: 100px;
+  border: none;
+  font-size: 18px;
+  font-weight: 600;
+}
+.product-title-input{
+  width: 100%;
+  border: none;
+  font-size: 18px;
+  font-weight: 400;
+}
+.product-title-input:focus {
+  border: none ;
+  outline: none;
 }
 @page {
   size: 80mm auto; /* Width fixed, height dynamic */

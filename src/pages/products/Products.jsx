@@ -87,7 +87,7 @@ const Products = () => {
   // const imageClickHandler = (url)=>{
   //   window.open(url, "_blank");
   // }
-  // onClick={() => imageClickHandler(`http://localhost:5000${image}`)}
+  // onClick={() => imageClickHandler(`https://pos-client-backend-oy6t.vercel.app${image}`)}
   const columns = [
     { title: "Name", dataIndex: "name" },
     { 
@@ -111,11 +111,11 @@ const Products = () => {
 
   const handlerSubmit = async (value) => {
 
-    for (let key in value) {
-      if (value[key] === null || value[key] === undefined) {
-        return message.error("Full fill the form");
-      }
-    }
+    // for (let key in value) {
+    //   if (value[key] === null || value[key] === undefined) {
+    //     return message.error("Full fill the form");
+    //   }
+    // }
 
     if(editProduct === null) {
       try {
@@ -225,12 +225,12 @@ const Products = () => {
               <Input type='number' />
             </FormItem>
             <FormItem name="image" label="Image URL">
-              <Input/>
+              <Input placeholder='Optional' />
             </FormItem>
             {/* <FormItem name="image" label="Image">
               {editProduct && editProduct.image && (
                 <div>
-                  <img src={`http://localhost:5000${editProduct.image}`} alt="Current" width="150" />
+                  <img src={`https://pos-client-backend-oy6t.vercel.app${editProduct.image}`} alt="Current" width="150" />
                   <p>Current Image</p>
                 </div>
               )}
