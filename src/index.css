@@ -7,7 +7,7 @@
 }
 
 body {
-  font-family: 'Montserrat', sans-serif;
+  /* font-family: 'Times New Roman', Times, serif; */
 }
 
 
@@ -286,7 +286,7 @@ body::-webkit-scrollbar-thumb {
   display: flex;
   justify-content: space-between;
   border-bottom: 1px dashed #001e28;
-  padding-top: 10px;
+  padding-top: 4px;
 }
 
 .footerCard {
@@ -502,26 +502,58 @@ body::-webkit-scrollbar-thumb {
   border: none ;
   outline: none;
 }
+.card {
+  width: 80mm ; /* Typical width for POS receipts */
+  font-size: 14px; /* Adjust font size as needed */
+  font-family: Arial, Helvetica, sans-serif monospace;
+  margin: 0 auto; /* Center content */
+}
+.ant-table-cell{
+  padding: 5px !important;
+}
+.cardHeader span b{
+  font-size: 12px;
+}
 @page {
   size: 80mm auto; /* Width fixed, height dynamic */
   margin: 0; /* No margins to fit the content */
 }
 @media print {
+  .page-break {
+    page-break-after: always;
+  }
+  
   .card {
       width: 80mm ; /* Typical width for POS receipts */
-      font-size: 12px; /* Adjust font size as needed */
+      font-size: 14px; /* Adjust font size as needed */
       margin: 0 auto; /* Center content */
+      font-family: Arial, Helvetica, sans-serif, monospace;
   }
   
   .cardHeader, .cardBody, .footerCardTotal, .footerThanks {
-      padding: 5px; /* Adjust padding for compactness */
+      padding: 5px; 
+      font-weight: 600;
+      font-size: 14px;
+  }
+  .cardHeader{
+    font-weight: 400;
+    font-size: 12px;
   }
 
   table {
-      width: 100%; /* Ensure tables fit the card width */
+      width: 100%;
+      font-weight: 600;
+      font-size: 14px;
+  }
+  .ant-table-cell{
+    padding: 5px !important;
   }
 
   .cardHeader h2 {
-      font-size: 14px; /* Adjust title font size */
+      font-size: 14px;
+  }
+  .cardHeader span b{
+      font-size: 12px;
   }
 }
+

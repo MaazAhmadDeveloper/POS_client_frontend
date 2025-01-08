@@ -54,14 +54,14 @@ const LayoutApp = ({children, headerInput, categories}) => {
             <Menu.Item key="/categories" icon={<BranchesOutlined />}>
                 <Link to="/categories">Categories</Link>
             </Menu.Item>
-            <Menu.Item key='/customer-detail' icon={<ContactsOutlined />}>
-                <Link to="/customer-detail">Customers</Link>
-            </Menu.Item>
             <Menu.Item key='/invoice' icon={<MoneyCollectOutlined />}>
                 <Link to="/invoice">Invoices</Link>
             </Menu.Item>
             <Menu.Item key='/reports' icon={<SnippetsOutlined />}>
                 <Link to="/reports">Reports</Link>
+            </Menu.Item>
+            <Menu.Item key='/customer-detail' icon={<ContactsOutlined />}>
+                <Link to="/customer-detail">Customers</Link>
             </Menu.Item>
         </Menu>
       </Sider>

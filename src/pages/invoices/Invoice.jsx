@@ -55,16 +55,16 @@ useEffect(() => {
         <Modal title="Invoice Details" width={400} pagination={false} visible={popModal} onCancel={() => setPopModal(false)} footer={false}>
 
           <div className="card" ref={componentRef}>
-            {/* <div className="cardHeader">
-                <h2 className="logo">MP POS</h2>
-                <span>Number: <b>+92300000000</b></span>
-                <span>Address: <b> ABCD, EFGH, IJKL</b></span>
+          <div className="cardHeader">
+                <h2 className="logo">Karachi Fresh Juice</h2>
+                <span><b>0300-079-0979</b></span>
+                <span><b>Baldia road, Baldia Plaza Bahawalnagar</b></span>
             </div>
             <div className="cardBody">
-                <div className="group">
+                {/* <div className="group">
                     <span>Bill Number:</span>
                     <span><b>{selectedBill.billNumber}</b></span>
-                </div>
+                </div> */}
                 { selectedBill.customerName !== "-----" && <div className="group">
                     <span>Customer Name:</span>
                     <span><b>{selectedBill.customerName}</b></span>
@@ -77,13 +77,13 @@ useEffect(() => {
                     <span>Customer Address:</span>
                     <span><b>{selectedBill.customerAddress}</b></span>
                 </div>}
-                { selectedBill.servicetType !== "-----" &&<div className="group">
-                    <span>Customer Address:</span>
-                    <span><b>{selectedBill.servicetType}</b></span>
+                { selectedBill?.servicetType !== "-----" &&<div className="group">
+                    <span>Service Type:</span>
+                    <span><b>{selectedBill?.servicetType}</b></span>
                 </div>}
-                { selectedBill.handler !== "-----" &&<div className="group">
-                    <span>Customer Address:</span>
-                    <span><b>{selectedBill.handler}</b></span>
+                { selectedBill?.handler !== "-----" &&<div className="group">
+                    <span>Handler:</span>
+                    <span><b>{selectedBill?.handler}</b></span>
                 </div>}
                 <div className="group">
                     <span>Payment Method:</span>
@@ -100,6 +100,10 @@ useEffect(() => {
 
                 <div className="footerCardTotal">
                     <div className="group">
+                        <p >Service Tax:</p>
+                        <p><b className="total">+ {selectedBill?.serviceTax}%</b></p>
+                    </div>
+                    <div className="group">
                         <h3 >Discount:</h3>
                         <h3><b className="total">- Rs {selectedBill.discount}</b></h3>
                     </div>
@@ -110,8 +114,8 @@ useEffect(() => {
                 </div>
                 <div className="footerThanks">
                     <span>Thank You for buying from us</span>
-                </div> */}
-                
+                </div>
+                <div className="page-break"></div>
                 {/* For shop */}
             <div className="cardHeader">
                 <h2 className="logo">For Shop &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>
@@ -167,7 +171,7 @@ useEffect(() => {
                         <p><b className="total">Rs {selectedBill.totalAmount}</b></p>
                     </div>
                 </div>
-            
+                <div className="page-break"></div>
                 {/* For Chef */}
             <div className="cardHeader">
                 <h2 className="logo">For Chef &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>

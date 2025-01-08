@@ -322,23 +322,19 @@ function isWithinAllowedTime() {
               <Select defaultValue={'Handler'} style={{ width: "100%" }}>
                 {serviceType === "dinning" && (
                   <>
-                    <Select.Option value="waiter1">Waiter 1</Select.Option>
-                    <Select.Option value="waiter2">Waiter 2</Select.Option>
-                    <Select.Option value="waiter3">Waiter 3</Select.Option>
+                    <Select.Option value="Adan">Adan </Select.Option>
+                    <Select.Option value="Sarfaraz">Sarfaraz</Select.Option>
+                    <Select.Option value="Mustafa">Mustafa</Select.Option>
                   </>
                 )}
                 {serviceType === "delivery" && (
                   <>
-                    <Select.Option value="deliveryboy1">Delivery Boy 1</Select.Option>
-                    <Select.Option value="deliveryboy2">Delivery Boy 2</Select.Option>
-                    <Select.Option value="deliveryboy3">Delivery Boy 3</Select.Option>
+                    <Select.Option value="Delivery Boy">Delivery Boy</Select.Option>
                   </>
                 )}
                 {serviceType === "takeaway" && (
                   <>
-                    <Select.Option value="counterstaff1">Counter Staff 1</Select.Option>
-                    <Select.Option value="counterstaff2">Counter Staff 2</Select.Option>
-                    <Select.Option value="counterstaff3">Counter Staff 3</Select.Option>
+                    <Select.Option value="Self Service">Self Service</Select.Option>
                   </>
                 )}
               </Select>

@@ -135,7 +135,11 @@ const Products = () => {
         dispatch({
           type: "HIDE_LOADING",
         });
-        message.error("Error!")
+        if (error?.response?.data?.code === 12) {
+          message.error(error?.response?.data?.message)
+        }else{
+          message.error("Error!")
+        }
         console.log(error);
       }
     } else {

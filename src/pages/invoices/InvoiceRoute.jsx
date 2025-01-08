@@ -125,7 +125,7 @@ const InvoicesRoute = () => {
         title: "Action",
         dataIndex: "_id",
         render:(id, record) => 
-        <div style={{display:"flex"}}>
+        <div style={{display:"flex", justifyContent: " space-around"}}>
           <EyeOutlined className='cart-edit eye' onClick={() => {setSelectedBill(record); setPopModal(true);}} />
           <PrinterOutlined className='cart-edit eye' onClick={() => {handlePrintClick(record);}} />
         </div>
@@ -189,9 +189,9 @@ const InvoicesRoute = () => {
           <div style={{position:"absolute", left:-999912}}>
         <div className="card" ref={componentRef}>
             <div className="cardHeader">
-                <h2 className="logo">MP POS</h2>
-                <span>Number: <b>+92300000000</b></span>
-                <span>Address: <b> ABCD, EFGH, IJKL</b></span>
+                <h2 className="logo">Karachi Fresh Juice</h2>
+                <span><b>0300-079-0979</b></span>
+                <span><b>Baldia road, Baldia Plaza Bahawalnagar</b></span>
             </div>
             <div className="cardBody">
                 {/* <div className="group">
@@ -211,11 +211,11 @@ const InvoicesRoute = () => {
                     <span><b>{selectedBill?.customerAddress}</b></span>
                 </div>}
                 { selectedBill?.servicetType !== "-----" &&<div className="group">
-                    <span>Customer Address:</span>
+                    <span>Service Type:</span>
                     <span><b>{selectedBill?.servicetType}</b></span>
                 </div>}
                 { selectedBill?.handler !== "-----" &&<div className="group">
-                    <span>Customer Address:</span>
+                    <span>Handler:</span>
                     <span><b>{selectedBill?.handler}</b></span>
                 </div>}
                 <div className="group">
