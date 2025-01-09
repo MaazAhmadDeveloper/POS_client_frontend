@@ -73,7 +73,7 @@ const LayoutApp = ({children, headerInput, categories}) => {
             onClick: toggle,
           })}
 
-        {/* {headerInput} */}
+        {headerInput}
 
           <div className="cart-items" onClick={() => navigate('/cart')}>
             <ShoppingCartOutlined />
