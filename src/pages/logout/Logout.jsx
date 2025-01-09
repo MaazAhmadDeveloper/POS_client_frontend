@@ -4,29 +4,32 @@ import { LogoutOutlined } from '@ant-design/icons';
 import { Modal, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { baseUrl } from '../../utils/url';
+import Cookies from 'js-cookie';
 
 function Logout({ collapsed }) {
     const [logoutModal, setLogoutModal] = useState(false)
     const navigate = useNavigate();
 
   const handlerLogout = async () => {
-    const userEmail = localStorage.getItem('user');
+    // const userEmail = localStorage.getItem('user');
+    Cookies.remove('session');
+    navigate("/login");
 
-    try {
-      const {data} = await axios.post(`https://pos-admin-backend.vercel.app/api/users/userlogout/${userEmail}`);
-      await axios.delete(`${baseUrl}/api/userAuth/deleteUser/${userEmail}`)
-      if (data === "User is not valid by admin") {
-        localStorage.removeItem("user");
-        message.error("This account is not valid by Admin");
-        navigate("/login");
-      }else if(data === "User Logout"){
-        localStorage.removeItem("user");
-        message.success("Logout successFully");
-        navigate("/login");
-      };
-    } catch (error) {
-      message.error("Check your Internet Connection!");
-    }
+    // try {
+    //   const {data} = await axios.post(`https://pos-admin-backend.vercel.app/api/users/userlogout/${userEmail}`);
+    //   await axios.delete(`${baseUrl}/api/userAuth/deleteUser/${userEmail}`)
+    //   if (data === "User is not valid by admin") {
+    //     localStorage.removeItem("user");
+    //     message.error("This account is not valid by Admin");
+    //     navigate("/login");
+    //   }else if(data === "User Logout"){
+    //     localStorage.removeItem("user");
+    //     message.success("Logout successFully");
+    //     navigate("/login");
+    //   };
+    // } catch (error) {
+    //   message.error("Check your Internet Connection!");
+    // }
   };
 
   return (

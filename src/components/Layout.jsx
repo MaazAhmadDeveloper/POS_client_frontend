@@ -63,6 +63,7 @@ const LayoutApp = ({children, headerInput, categories}) => {
             <Menu.Item key='/customer-detail' icon={<ContactsOutlined />}>
                 <Link to="/customer-detail">Customers</Link>
             </Menu.Item>
+            
         </Menu>
       </Sider>
       <Layout className="site-layout">
@@ -75,13 +76,14 @@ const LayoutApp = ({children, headerInput, categories}) => {
 
         {headerInput}
 
-          <div className="cart-items" onClick={() => navigate('/cart')}>
+
+          <div className="" onClick={() => navigate('/cart')}>
             <ShoppingCartOutlined />
             <span className="cart-badge">{cartItems.length}</span>
           </div>
-          {/* <Logout 
+          <Logout 
               collapsed={collapsed}
-          /> */}
+          />
 
         </Header>
 
