@@ -209,7 +209,7 @@ const Products = () => {
 
         {secretAllow ? <UnlockOutlined style={{ marginLeft: "330px" }} onClick={() => { setSecretAllow(false); setSecretInputValue("") }} /> : <LockOutlined style={{ marginLeft: "330px" }} onClick={() => setSecretModal(true)} />}
         
-        <Button className='add-new' style={{ position: "absolute", right: -50, zIndex: "1000", top: 15 }} onClick={() => secretAllow ? setPopModal(true) : setSecretModal(true)}>Add Product</Button>
+        <Button className='add-new'  onClick={() => secretAllow ? setPopModal(true) : setSecretModal(true)}>Add Product</Button>
       </div>
       <Table dataSource={productData} columns={columns} bordered />
 

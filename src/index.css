@@ -54,7 +54,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 .cart-items {
-  position: relative;
+  /* position: relative; */
   margin-right: 10px;
   margin-left: auto;
   cursor: pointer;
@@ -63,10 +63,6 @@ body::-webkit-scrollbar-thumb {
 .ant-layout-header .anticon svg {
   font-size: 30px;
   vertical-align: middle;
-}
-
-.cart-items span {
-  font-size: 18px;
 }
 
 .cart-badge {

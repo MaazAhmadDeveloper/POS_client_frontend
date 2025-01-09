@@ -73,15 +73,15 @@ const LayoutApp = ({children, headerInput, categories}) => {
             onClick: toggle,
           })}
 
-        {headerInput}
+        {/* {headerInput} */}
 
           <div className="cart-items" onClick={() => navigate('/cart')}>
             <ShoppingCartOutlined />
             <span className="cart-badge">{cartItems.length}</span>
           </div>
-          <Logout 
+          {/* <Logout 
               collapsed={collapsed}
-          />
+          /> */}
 
         </Header>
 
