@@ -56,7 +56,7 @@ body::-webkit-scrollbar-thumb {
 .cart-items {
   position: relative;
   margin-right: 10px;
-  margin-left: 0;
+  margin-left: auto;
   cursor: pointer;
 }
 
@@ -195,7 +195,7 @@ body::-webkit-scrollbar-thumb {
   padding: 5px 20px;
   border-radius: 10px;
   height: 40px;
-  width: 100%;
+  width: 80%;
 }
 .searchInput .searchInputHome:focus{
   outline: none;

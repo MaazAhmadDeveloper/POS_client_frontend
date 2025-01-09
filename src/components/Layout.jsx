@@ -66,7 +66,7 @@ const LayoutApp = ({children, headerInput, categories}) => {
         </Menu>
       </Sider>
       <Layout className="site-layout">
-        <Header className="site-layout-background" style={{ padding: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Header className="site-layout-background" style={{ padding: 0, display: 'flex', alignItems: 'center' }}>
           
           {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
             className: 'trigger',
