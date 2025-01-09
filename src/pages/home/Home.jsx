@@ -96,7 +96,7 @@ const Home = () => {
     <LayoutApp
       headerInput={
         <HeaderInput
-          searchInput={searchInput}
+        searchInputHome={searchInput}
           setSearchInput={setSearchInput}
           selectedCategory={selectedCategory}
         />
