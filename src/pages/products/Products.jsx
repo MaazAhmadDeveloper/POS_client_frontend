@@ -249,7 +249,7 @@ const Products = () => {
       }
 
       <Modal title={"Secret Key "} visible={secretModal} onCancel={() => { setSecretModal(false); setSecretInputValue("") }} footer={false}>
-        <form>
+        {/* <form> */}
 
         <h3>Enter Secret Key here</h3>
         <input
@@ -262,9 +262,9 @@ const Products = () => {
           />
         <div style={{ display: "flex" }}>
           <Button className='cancel-category' onClick={() => { setSecretModal(false); setSecretInputValue("") }}>Cancel</Button>
-          <Button className='delete-category' onClick={() => {secretConfirmHandle()}} type='submit'>Confirm</Button>
+          <Button className='delete-category' onClick={() => {secretConfirmHandle()}} >Confirm</Button>
         </div>
-        </form>
+        {/* </form> */}
       </Modal>
 
       <Modal title={"Delete Product "} visible={deleteModel} onCancel={() => { setDeleteModel(false) }} footer={false}>
