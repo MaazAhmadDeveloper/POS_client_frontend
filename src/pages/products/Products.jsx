@@ -169,8 +169,8 @@ const Products = () => {
   }
 
   const secretConfirmHandle = (e) => {
-    e.preventDefault();
-    if (secretInputValue.toString() === "123456") {
+
+    if (secretInputValue?.toString() === "123456") {
       setSecretAllow(true);
       message.success("Your Product Sections Unlocked");
       setSecretInputValue("");
@@ -249,7 +249,7 @@ const Products = () => {
       }
 
       <Modal title={"Secret Key "} visible={secretModal} onCancel={() => { setSecretModal(false); setSecretInputValue("") }} footer={false}>
-        <form onSubmit={secretConfirmHandle}>
+        <form>
 
         <h3>Enter Secret Key here</h3>
         <input
@@ -262,7 +262,7 @@ const Products = () => {
           />
         <div style={{ display: "flex" }}>
           <Button className='cancel-category' onClick={() => { setSecretModal(false); setSecretInputValue("") }}>Cancel</Button>
-          <Button className='delete-category' type='submit'>Confirm</Button>
+          <Button className='delete-category' onClick={() => {secretConfirmHandle()}} type='submit'>Confirm</Button>
         </div>
         </form>
       </Modal>
