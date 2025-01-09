@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Table } from 'antd';
 import {BackwardOutlined} from '@ant-design/icons';
 import axios from 'axios';
+import { baseUrl } from '../../utils/url';
 
 function SelectedCategory( {selectedCategory, setSelectedCategory} ) {
   const dispatch = useDispatch(); 
@@ -30,7 +31,7 @@ function SelectedCategory( {selectedCategory, setSelectedCategory} ) {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
+      const {data} = await axios.get(`${baseUrl}/api/products/getproducts`);
       setProductData(data.filter((obj) => (obj.category.includes(selectedCategory))));
 
       dispatch({

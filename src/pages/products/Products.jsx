@@ -5,6 +5,7 @@ import LayoutApp from '../../components/Layout';
 import { DeleteOutlined, EditOutlined, LockOutlined, UnlockOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Modal, Select, Table, message } from 'antd';
 import FormItem from 'antd/lib/form/FormItem';
+import { baseUrl } from '../../utils/url';
 
 const Products = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Products = () => {
   const getAllProducts = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      const { data } = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
+      const { data } = await axios.get(`${baseUrl}/api/products/getproducts`);
       setFullProductData(data);
       setProductData(data);
       dispatch({ type: "HIDE_LOADING" });
@@ -38,7 +39,7 @@ const Products = () => {
   const getAllCategories = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      const { data } = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/categories/getCategories');
+      const { data } = await axios.get(`${baseUrl}/api/categories/getCategories`);
       setAllCategories(data);
       dispatch({ type: "HIDE_LOADING" });
     } catch (error) {
@@ -63,7 +64,7 @@ const Products = () => {
   const handlerDelete = async () => {
     try {
       dispatch({ type: "SHOW_LOADING" });
-      await axios.post('https://pos-client-backend-oy6t.vercel.app/api/products/deleteproducts', { productId: recordToDelete._id, imagePath:recordToDelete.image });
+      await axios.post(`${baseUrl}/api/products/deleteproducts`, { productId: recordToDelete._id, imagePath:recordToDelete.image });
       message.success("Product Deleted Successfully!");
       getAllProducts();
       setPopModal(false);
@@ -87,7 +88,7 @@ const Products = () => {
   // const imageClickHandler = (url)=>{
   //   window.open(url, "_blank");
   // }
-  // onClick={() => imageClickHandler(`https://pos-client-backend-oy6t.vercel.app${image}`)}
+  // onClick={() => imageClickHandler(`${baseUrl}${image}`)}
   const columns = [
     { title: "Name", dataIndex: "name" },
     { 
@@ -123,7 +124,7 @@ const Products = () => {
           type: "SHOW_LOADING",
         });
         // console.log(value);
-        await axios.post('https://pos-client-backend-oy6t.vercel.app/api/products/addproducts', value);
+        await axios.post(`${baseUrl}/api/products/addproducts`, value);
         message.success("Product Added Successfully!")
         getAllProducts();
         setPopModal(false);
@@ -147,7 +148,7 @@ const Products = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-       await axios.put('https://pos-client-backend-oy6t.vercel.app/api/products/updateproducts', {...value, productId:editProduct._id});
+       await axios.put(`${baseUrl}/api/products/updateproducts`, {...value, productId:editProduct._id});
         message.success("Product Updated Successfully!")
         getAllProducts();
 
@@ -234,7 +235,7 @@ const Products = () => {
             {/* <FormItem name="image" label="Image">
               {editProduct && editProduct.image && (
                 <div>
-                  <img src={`https://pos-client-backend-oy6t.vercel.app${editProduct.image}`} alt="Current" width="150" />
+                  <img src={`${baseUrl}${editProduct.image}`} alt="Current" width="150" />
                   <p>Current Image</p>
                 </div>
               )}

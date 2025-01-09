@@ -3,6 +3,7 @@ import axios from 'axios';
 import { LogoutOutlined } from '@ant-design/icons';
 import { Modal, Button, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '../../utils/url';
 
 function Logout({ collapsed }) {
     const [logoutModal, setLogoutModal] = useState(false)
@@ -13,7 +14,7 @@ function Logout({ collapsed }) {
 
     try {
       const {data} = await axios.post(`https://pos-admin-backend.vercel.app/api/users/userlogout/${userEmail}`);
-      await axios.delete(`https://pos-client-backend-oy6t.vercel.app/api/userAuth/deleteUser/${userEmail}`)
+      await axios.delete(`${baseUrl}/api/userAuth/deleteUser/${userEmail}`)
       if (data === "User is not valid by admin") {
         localStorage.removeItem("user");
         message.error("This account is not valid by Admin");

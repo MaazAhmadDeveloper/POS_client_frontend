@@ -7,6 +7,7 @@ import { EyeOutlined, UploadOutlined, DownloadOutlined, CloudUploadOutlined, Clo
 import Layout from '../../components/Layout'
 import Invoice from '../invoices/Invoice';
 import { useNavigate } from 'react-router-dom';
+import { baseUrl } from '../../utils/url';
 
 const Reports = () => {
   const { toPDF, targetRef } = usePDF({filename: 'page.pdf',});
@@ -27,7 +28,7 @@ const Reports = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/products/getproducts');
+      const {data} = await axios.get(`${baseUrl}/api/products/getproducts`);
       setProductData(data);
       dispatch({
         type: "HIDE_LOADING",
@@ -46,7 +47,7 @@ const Reports = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
+      const {data} = await axios.get(`${baseUrl}/api/bills/getbills`);
       setBillsData(data);
       setFullBillsData(data);
       console.log(data);
@@ -201,7 +202,7 @@ const Reports = () => {
         type: "SHOW_LOADING",
       });
       message.success("Wait for Backup !");
-        const response = await axios.post("https://pos-client-backend-oy6t.vercel.app/api/userData/dataBackup", parsedStorage );
+        const response = await axios.post(`${baseUrl}/api/userData/dataBackup`, parsedStorage );
 
         if (response.data !== "out dated") {
           window.location.href = "/reports";

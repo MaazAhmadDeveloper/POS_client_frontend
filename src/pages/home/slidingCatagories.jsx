@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
+import { baseUrl } from '../../utils/url';
 
 function SlidingCatagories( { selectedCategory, setSelectedCategory} ) {
     const [categories, setCategories] = useState([]);
@@ -12,7 +13,7 @@ function SlidingCatagories( { selectedCategory, setSelectedCategory} ) {
                     dispatch({
                       type: "SHOW_LOADING",
                     });
-                    const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/categories/getCategories');
+                    const {data} = await axios.get(`${baseUrl}/api/categories/getCategories`);
                     setCategories(data);
                     // console.log(data);
               

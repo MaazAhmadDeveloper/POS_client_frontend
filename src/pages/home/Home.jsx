@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import HeaderInput from "./HeaderInput";
 import SlidingCatagories from "./slidingCatagories";
 import { useNavigate } from "react-router-dom";
+import { baseUrl } from "../../utils/url";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const Home = () => {
         dispatch({
           type: "SHOW_LOADING",
         });
-        const { data } = await axios.get("https://pos-client-backend-oy6t.vercel.app/api/products/getproducts");
+        const { data } = await axios.get(`${baseUrl}/api/products/getproducts`);
         // console.log(data);
         setFullProductData(data);
         setProductData(data);
@@ -44,12 +45,12 @@ const Home = () => {
 
   const getAllBills = async () => {
     try {
-      const { data } = await axios.get("https://pos-client-backend-oy6t.vercel.app/api/bills/getbills");
+      const { data } = await axios.get(`${baseUrl}/api/bills/getbills`);
       setBillsData(data);
       if (data.length === 0) {
         const getAllDataFromBackup = async () => {
           message.success("Data Coming from Cloud Server !");
-          await axios.get("https://pos-client-backend-oy6t.vercel.app/api/userData/getdataBackup");
+          await axios.get(`${baseUrl}/api/userData/getdataBackup`);
         };
         getAllDataFromBackup();
       }

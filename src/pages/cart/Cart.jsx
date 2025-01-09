@@ -7,6 +7,7 @@ import FormItem from 'antd/lib/form/FormItem';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Invoice from '../invoices/Invoice';
+import { baseUrl } from '../../utils/url';
 
 const Cart = () => {
 
@@ -98,7 +99,7 @@ const Cart = () => {
           dispatch({
             type: "SHOW_LOADING",
           });
-          const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
+          const {data} = await axios.get(`${baseUrl}/api/bills/getbills`);
           setBillsDataNumbers(data.length +1000);
           dispatch({
             type: "HIDE_LOADING",
@@ -241,7 +242,7 @@ function isWithinAllowedTime() {
             setSelectedInvoice(newObject)
             // console.log(newObject);
 
-            await axios.post("https://pos-client-backend-oy6t.vercel.app/api/bills/addbills", newObject);
+            await axios.post(`${baseUrl}/api/bills/addbills`, newObject);
             message.success("Bill Generated!");
             localStorage.setItem('orderNumber', (orderNumber + 1).toString());  
 

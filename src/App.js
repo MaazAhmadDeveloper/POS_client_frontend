@@ -12,6 +12,8 @@ import PageNotFound from './pages/404/PageNotFound';
 import axios from 'axios';
 import { message } from 'antd';
 import Customer from './pages/customers/Customer';
+import Cookies from 'js-cookie';
+import { baseUrl } from './utils/url';
 
 function App() {
   return (
@@ -36,47 +38,28 @@ function App() {
 export default App;
 
 export function ProtectedRouter({ children }) {
-  const [verificationStatus, setVerificationStatus] = useState(null); // null: loading, true: verified, false: not verified
-  const storage = localStorage.getItem('user');
+  const session = Cookies.get('session');
+  const [verificationStatus, setVerificationStatus] = useState(null);
   const location = useLocation();
-
   useEffect(() => {
-    console.log("switched");
     const verifyUserExpiry = async () => {
-      if (!storage) {
-        setVerificationStatus(false); // No user found in localStorage, so we redirect
+      if (session) {
+        setVerificationStatus(true);
+      }else{  
+        setVerificationStatus(false);
         return;
       }
-
-      try {
-        const { data } = await axios.get(`https://pos-client-backend-oy6t.vercel.app/api/userAuth/checkUser/${storage}`);
-
-        if (data.verification_code === 0 || data.verification_code === 2) {
-          message.error(data.message);
-          localStorage.removeItem('user');
-          setVerificationStatus(false); // User is not verified or expired
-        } else if (data.verification_code === 1) {
-          setVerificationStatus(true); // User is verified
-        }
-      } catch (error) {
-        console.error("Error during verification:", error);
-        setVerificationStatus(false); // On error, consider the user not verified
-      }
+      
     };
 
     verifyUserExpiry();
-  }, [storage, location]);
+  }, [session, location]);
 
   if (verificationStatus === null) {
-    // Loading state while checking verification
     return <div>Loading...</div>;
   }
-
   if (verificationStatus === false) {
-    // Redirect to login if the user is not verified or there was an error
     return <Navigate to="/login" />;
   }
-
-  // Render children only when verification_code is 1
   return children;
 }

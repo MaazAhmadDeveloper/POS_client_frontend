@@ -6,6 +6,7 @@ import { EyeOutlined, PrinterOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import Layout from '../../components/Layout'
 import Invoice from './Invoice';
+import { baseUrl } from '../../utils/url';
 
 const InvoicesRoute = () => {
     const dispatch = useDispatch();
@@ -27,7 +28,7 @@ const InvoicesRoute = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
+      const {data} = await axios.get(`${baseUrl}/api/bills/getbills`);
       setBillsData(data);
       setFullBillsData(data);
       console.log(data);

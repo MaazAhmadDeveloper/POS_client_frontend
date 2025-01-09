@@ -6,6 +6,7 @@ import { EyeOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import Layout from '../../components/Layout'
 import Invoice from './Invoice';
+import { baseUrl } from '../../utils/url';
 
 const Customer = () => {
     const dispatch = useDispatch();
@@ -21,7 +22,7 @@ const Customer = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      const {data} = await axios.get('https://pos-client-backend-oy6t.vercel.app/api/bills/getbills');
+      const {data} = await axios.get(`${baseUrl}/api/bills/getbills`);
       const filteredData = data.filter(
         obj => !(obj.customerName === "-----" && obj.customerAddress === "-----" && obj.customerPhone === "-----")
       );

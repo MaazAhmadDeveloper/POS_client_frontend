@@ -4,6 +4,7 @@ import axios from 'axios'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import { baseUrl } from '../../utils/url'
 
 const Register = () => {
 
@@ -15,7 +16,7 @@ const Register = () => {
       dispatch({
         type: "SHOW_LOADING",
       });
-      await axios.post('https://pos-client-backend-oy6t.vercel.app/api/users/register', value);
+      await axios.post(`${baseUrl}/api/users/register`, value);
       message.success("Register Successfully!");
       navigate("/login");
       dispatch({
