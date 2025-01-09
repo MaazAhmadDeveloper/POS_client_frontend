@@ -190,7 +190,7 @@ body::-webkit-scrollbar-thumb {
 
 .searchInput{
   position: relative;
-  width: 140vh;
+  width: 100vh;
   margin-left: 10px;
 }
 

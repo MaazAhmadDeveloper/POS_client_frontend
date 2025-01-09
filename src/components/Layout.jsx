@@ -75,9 +75,8 @@ const LayoutApp = ({children, headerInput, categories}) => {
           })}
 
         {headerInput}
-
-
-          <div className="" onClick={() => navigate('/cart')}>
+        
+          <div className="cart-items" onClick={() => navigate('/cart')}>
             <ShoppingCartOutlined />
             <span className="cart-badge">{cartItems.length}</span>
           </div>
