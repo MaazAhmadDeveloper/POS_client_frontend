@@ -18,16 +18,44 @@ const Cart = () => {
     const [selectedInvoice, setSelectedInvoice] = useState([]);
     const [enterPressCount, setEnterPressCount] = useState(0);
     const [discountValue, setDiscountValue] = useState(0);
-    const [serviceTaxValue, setServiceTaxValue] = useState(10);
+    const [serviceTaxValue, setServiceTaxValue] = useState(5);
+    const [deliveryFeeValue, setDeliveryFeeValue] = useState(50);
+    const [perHeadValue, setPerHeadValue] = useState(1);
     const [invoicepopModal, setInvoicePopModal] = useState(false);
     const [deleteModal, setDeleteModal] = useState(false);
+    const [editInvoice, setEditInvoice] = useState(null);
     const [confirmDeleteData, setConfirmDeleteData] = useState();
-    const [invoiceNumber, setiInvoiceNumber] = useState(0);
+    const [invoiceDataFlag, setInvoiceDataFlag] = useState(0);
     const [serviceType, setServiceType] = useState("dinning");
 
     const dispatch = useDispatch();
 
     const {cartItems} = useSelector(state => state.rootReducer);
+
+    const editInvoiceChecker = ()=>{
+      const editItem = cartItems.find((item) => item.status === "edit");
+      if (editItem) {
+        // if (editItem.invoice.servicetType === "dinning" || editItem.invoice.servicetType === "takeaway") {}
+        setEditInvoice({...editItem.invoice});
+        setServiceType(editItem.invoice.servicetType)
+        setServiceTaxValue(editItem.invoice.serviceTax)
+        setPerHeadValue(editItem.invoice.perHead)
+        setDeliveryFeeValue(editItem.invoice.deliveryFee)
+        setDiscountValue(editItem.invoice.discount)
+      }else{
+        setEditInvoice(null);
+        setServiceType("dinning")
+        setServiceTaxValue(5)
+        setPerHeadValue(1)
+        setDeliveryFeeValue(50)
+        setDiscountValue(0)
+      }
+    }
+
+    useEffect(() => {
+      editInvoiceChecker();
+
+  }, [cartItems]);
 
     const handlerIncrement = (record) => {
         dispatch({
@@ -50,6 +78,7 @@ const Cart = () => {
             type: "DELETE_FROM_CART",
             payload: confirmDeleteData
         });
+        editInvoiceChecker()
     }
 
     const columns = [
@@ -157,7 +186,7 @@ useEffect(() => {
     const now = new Date();
     const currentTime = now.getTime();
     const resetTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 9).getTime(); 
-    console.log("resetTime: "+ resetTime);
+    // console.log("resetTime: "+ resetTime);
     // const resetTime = new Date(currentTime + 2 * 60 * 1000).getTime();
     const lastResetTime = localStorage.getItem('lastResetTime');
     let orderNumber = localStorage.getItem('orderNumber');
@@ -220,7 +249,41 @@ function isWithinAllowedTime() {
 
 
     const handlerSubmit = async (value) => {
-      // console.log(value);
+      if (editInvoice) {
+        try {
+          const updateInvoiceObj = {
+            _id: editInvoice._id,
+            billNumber: editInvoice.billNumber,
+            customerAddress: value.customerAddress !== undefined && value.customerAddress !== null && value.customerAddress !== "" && value.customerAddress !== " " ? value.customerAddress : "-----",
+            customerName: value.customerName !== undefined && value.customerName !== null && value.customerName !== "" && value.customerName !== " " ? value.customerName.toString() : "-----",
+            customerPhone: value.customerPhone !== undefined && value.customerPhone !== null && value.customerPhone !== "" && value.customerPhone !== " " ? value.customerPhone.toString() : "-----",
+            paymentMethod: value.paymentMethod !== undefined && value.paymentMethod !== null && value.paymentMethod !== "" && value.paymentMethod !== " " ? value.paymentMethod : "Cash",
+            servicetType: value.servicetType !== undefined && value.servicetType !== null && value.servicetType !== "" && value.servicetType !== " " ? value.servicetType : "Dinning",
+            handler:  value.handler !== undefined && value.handler !== null && value.handler !== "" && value.handler !== " " ? value.handler : value.servicetType === 'delivery' ? "Delivery Boy" : "Waiter",
+            serviceTax: value.serviceTax !== undefined && value.serviceTax !== null && value.serviceTax !== "" && value.serviceTax !== " " ? value.serviceTax : 0,
+            deliveryFee: value.deliveryFee !== undefined && value.deliveryFee !== null && value.deliveryFee !== "" && value.deliveryFee !== " " ? value.deliveryFee : 0,
+            perHead: value.perHead !== undefined && value.perHead !== null && value.perHead !== "" && value.perHead !== " " ? value.perHead : 0,
+            cartItems: cartItems.map(({ _id, name, category, price, image, quantity, status }) => ({_id, name, category, price, image, quantity, status})),
+            subTotal,
+            discount: Number(discountValue),
+            totalAmount: totalAmountCalc(),
+          }
+          console.log(cartItems);
+          setSelectedInvoice(updateInvoiceObj)
+          await axios.patch(`${baseUrl}/api/bills/updatebill`, updateInvoiceObj);
+          message.success("Bill Updated!");
+          dispatch({
+            type: "EMPTY_CART", 
+          });
+          setBillPopUp(false)
+          setInvoicePopModal(true);
+        } catch (error) {
+          message.error("Error!")
+          console.log(error);
+        }
+        setEnterPressCount(0);
+        return;
+      }
       let orderNumber = parseInt(localStorage.getItem('orderNumber'), 10);
         try {
             const newObject = {
@@ -231,8 +294,10 @@ function isWithinAllowedTime() {
               customerPhone: value.customerPhone !== undefined && value.customerPhone !== null && value.customerPhone !== "" && value.customerPhone !== " " ? value.customerPhone.toString() : "-----",
               paymentMethod: value.paymentMethod !== undefined && value.paymentMethod !== null && value.paymentMethod !== "" && value.paymentMethod !== " " ? value.paymentMethod : "Cash",
               servicetType: value.servicetType !== undefined && value.servicetType !== null && value.servicetType !== "" && value.servicetType !== " " ? value.servicetType : "Dinning",
-              handler: value.handler !== undefined && value.handler !== null && value.handler !== "" && value.handler !== " " ? value.handler : "Waiter",
+              handler:  value.handler !== undefined && value.handler !== null && value.handler !== "" && value.handler !== " " ? value.handler : value.servicetType === 'delivery' ? "Delivery Boy" : "Waiter",
               serviceTax: value.serviceTax !== undefined && value.serviceTax !== null && value.serviceTax !== "" && value.serviceTax !== " " ? value.serviceTax : 0,
+              deliveryFee: value.deliveryFee !== undefined && value.deliveryFee !== null && value.deliveryFee !== "" && value.deliveryFee !== " " ? value.deliveryFee : 0,
+              perHead: value.perHead !== undefined && value.perHead !== null && value.perHead !== "" && value.perHead !== " " ? value.perHead : 0,
               cartItems,
               subTotal,
               discount: Number(discountValue),
@@ -268,9 +333,15 @@ function isWithinAllowedTime() {
     }
 
     const totalAmountCalc = ()=>{
-      const total = (subTotal * (serviceTaxValue / 100)) + subTotal;
-      const finalTotal = (Number(total) - discountValue); 
-      return (finalTotal).toFixed(2);
+      if(serviceType === "dinning"){
+        const total = (subTotal * (serviceTaxValue / 100)) + subTotal;
+        const finalTotal = ((Number(total) + Number(perHeadValue * 100)) - discountValue);
+        return (finalTotal).toFixed(2);
+      }else if (serviceType === "delivery") {
+        return (Number(subTotal) + Number(deliveryFeeValue)) - Number(discountValue);
+      }else if(serviceType === "takeaway") {
+        return Number(subTotal) - Number(discountValue);
+      }
     }
 
   return (
@@ -279,10 +350,10 @@ function isWithinAllowedTime() {
       <Table dataSource={cartItems} columns={columns} bordered />
       <div className="subTotal">
         <h2>Sub Total: <span>Rs {(subTotal).toFixed(2)}</span></h2>
-        <Button onClick={() => cartItems.length !==0 ? createInvoiceClickHandle() : message.error("Your Cart is empty")} className='add-new'>Create Invoice</Button>
+        <Button onClick={() => cartItems.length !==0 ? createInvoiceClickHandle() : message.error("Your Cart is empty")} className='add-new'> Create Invoice</Button>
       </div>
       <Modal title="Create Invoice" visible={billPopUp} onCancel={() => setBillPopUp(false) } footer={false}>
-        <Form id='generateInvoiveform' layout='vertical' onFinish={handlerSubmit}   initialValues={{serviceTax: serviceTaxValue,}}>
+        <Form id='generateInvoiveform' layout='vertical' onFinish={handlerSubmit}   initialValues={{serviceTax: serviceTaxValue, deliveryFee: deliveryFeeValue, perHead:perHeadValue, discount:discountValue, customerName:editInvoice?.customerName, customerPhone:editInvoice?.customerPhone, customerAddress:editInvoice?.customerAddress}}>
             <FormItem name="customerName" label="Customer Name">
               <Input placeholder='(Optional)' ref={nameInputRef}/>
             </FormItem>
@@ -300,13 +371,6 @@ function isWithinAllowedTime() {
                 onChange={ (e)=>{setDiscountValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
                 value={discountValue} />
             </FormItem>
-            <FormItem name="serviceTax" label="Service Tax (%age)">
-              <Input 
-                type='number' 
-                onWheel={(e) => e.target.blur()}
-                onChange={ (e)=>{setServiceTaxValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
-                value={serviceTaxValue} />
-            </FormItem>
             {/* no this dropdown show if servicetType is take away */}
             <FormItem name="servicetType" label="Service Type">
               <Select
@@ -323,7 +387,7 @@ function isWithinAllowedTime() {
               <Select defaultValue={'Handler'} style={{ width: "100%" }}>
                 {serviceType === "dinning" && (
                   <>
-                    <Select.Option value="Adan">Adan </Select.Option>
+                    <Select.Option value="Adnan">Adnan </Select.Option>
                     <Select.Option value="Sarfaraz">Sarfaraz</Select.Option>
                     <Select.Option value="Mustafa">Mustafa</Select.Option>
                   </>
@@ -340,6 +404,32 @@ function isWithinAllowedTime() {
                 )}
               </Select>
             </FormItem>
+            {serviceType === "dinning" && (
+                <FormItem name="serviceTax" label="Service Tax (%age)">
+                  <Input 
+                    type='number' 
+                    onWheel={(e) => e.target.blur()}
+                    onChange={ (e)=>{setServiceTaxValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
+                    value={serviceTaxValue} />
+                </FormItem>
+              )}
+              {serviceType === "delivery" && (
+                <FormItem name="deliveryFee" label="Delivery Fee">
+                  <Input 
+                    type='number' 
+                    onWheel={(e) => e.target.blur()}
+                    onChange={ (e)=>{setDeliveryFeeValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
+                    value={deliveryFeeValue} />
+                </FormItem>
+              )}
+              {serviceType === "dinning" &&
+              <FormItem name="perHead" label="Per Head">
+                <Input 
+                  type='number' 
+                  onWheel={(e) => e.target.blur()}
+                  onChange={ (e)=>{setPerHeadValue(e.target.value <= 0 ? 0 : e.target.value ); e.target.value.toString().includes("-") && message.error("you cannot set negative value") ;  } } 
+                  value={perHeadValue} />
+              </FormItem>}             
             <FormItem name="paymentMethod" label="Payment Method">
               <Select defaultValue="Cash" style={{ width: "100%"}}>
                 <Select.Option value="cash">Cash</Select.Option>
@@ -348,12 +438,21 @@ function isWithinAllowedTime() {
             </FormItem>
             <div className="total">
                 <span>SubTotal: Rs {(subTotal.toFixed(2) )}</span><br />
-                <span>Discount: Rs {discountValue} </span><br />
-                <span>Service Tax: {serviceTaxValue}% </span>
+                {serviceType === "dinning" &&
+                  <><span>Service Tax: {serviceTaxValue}% </span><br /></>
+                }
+                {serviceType === "delivery" &&
+                 <><span>Delivery Fee: Rs {deliveryFeeValue} </span><br /></>
+                }
+                {serviceType === "dinning" &&
+                  <><span>Per Head ({perHeadValue}): {perHeadValue * 100} </span><br /></>
+                }
+                <span>Discount: Rs {discountValue} </span>
+                
                 <h3>Total: Rs {totalAmountCalc()}</h3>
             </div>
             <div className="form-btn-add">
-              <Button id='submitButton' htmlType='submit' className='add-new' >Generate Invoice</Button>
+              <Button id='submitButton' htmlType='submit' className='add-new' >{editInvoice ? "Update" : "Generate"} Invoice</Button>
             </div>  
         </Form>
       </Modal>

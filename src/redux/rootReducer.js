@@ -39,6 +39,14 @@ export const rootReducer = (state = initialState, action) => {
             ...state,
             cartItems: [],
         };
+        case "SET_CART":
+        return {
+            ...state,
+            cartItems: action.payload.map((item) => ({
+                ...item,
+                status: "edit",
+            })),
+        };
         
         default: return state;
     }

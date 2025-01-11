@@ -4,7 +4,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 import {rootReducer} from './rootReducer';
 
 const finalReducer = combineReducers({
-    rootReducer,
+    rootReducer, 
 }); 
 
 const initialState = {

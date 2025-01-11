@@ -1,17 +1,33 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import { useReactToPrint } from 'react-to-print';
 import { Button, Modal, Table } from 'antd';
 
 function Invoice( {selectedBill, popModal, setPopModal } ) {
     const componentRef = useRef();
+    const userCardRef = useRef();
+    const [isEditFlag, setIsEditFlag] = useState(false);
 
     const handlePrint = useReactToPrint({
         content: () => componentRef.current,
       });
-
+    const handleUserCardPrint = useReactToPrint({
+        content: () => userCardRef.current,
+      });
+useEffect(()=>{
+    const editItem = selectedBill.cartItems?.find((item) => item.status === "edit");
+    if (editItem) {
+        setIsEditFlag(true);
+    }else{
+        setIsEditFlag(false)
+    }
+},[selectedBill])
     const generateInvoiceClickHandle = ()=>{
         setPopModal(false);
-        handlePrint();
+        if (isEditFlag) {
+            handleUserCardPrint();
+        }else{
+            handlePrint();
+        }
     }
       const columns = [
         {
@@ -53,18 +69,18 @@ useEffect(() => {
   return (
     <div>
         <Modal title="Invoice Details" width={400} pagination={false} visible={popModal} onCancel={() => setPopModal(false)} footer={false}>
-
-          <div className="card" ref={componentRef}>
-          <div className="cardHeader">
+{isEditFlag && 
+<div className="card" ref={userCardRef}>
+        <div className="cardHeader">
                 <h2 className="logo">Karachi Fresh Juice</h2>
                 <span><b>0300-079-0979</b></span>
                 <span><b>Baldia road, Baldia Plaza Bahawalnagar</b></span>
             </div>
             <div className="cardBody">
-                {/* <div className="group">
-                    <span>Bill Number:</span>
+                <div className="group">
+                    <span>Invoice Number:</span>
                     <span><b>{selectedBill.billNumber}</b></span>
-                </div> */}
+                </div>
                 { selectedBill.customerName !== "-----" && <div className="group">
                     <span>Customer Name:</span>
                     <span><b>{selectedBill.customerName}</b></span>
@@ -99,10 +115,22 @@ useEffect(() => {
             <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />
 
                 <div className="footerCardTotal">
+                    {selectedBill.deliveryFee ?
+                    <div className="group">
+                        <p >Delivery Fee:</p>
+                        <p><b className="total">+ Rs {selectedBill?.deliveryFee}</b></p>
+                    </div>
+                    :
                     <div className="group">
                         <p >Service Tax:</p>
                         <p><b className="total">+ {selectedBill?.serviceTax}%</b></p>
                     </div>
+                    }
+                    {selectedBill.perHead !==0 &&
+                    <div className="group">
+                        <p >Per Head ({selectedBill.perHead}):</p>
+                        <p><b className="total">+ {selectedBill.perHead * 100}</b></p>
+                    </div>}
                     <div className="group">
                         <h3 >Discount:</h3>
                         <h3><b className="total">- Rs {selectedBill.discount}</b></h3>
@@ -115,16 +143,20 @@ useEffect(() => {
                 <div className="footerThanks">
                     <span>Thank You for buying from us</span>
                 </div>
-                <div className="page-break"></div>
+</div>}
+
+
+{!isEditFlag && 
+<div className="card" ref={componentRef}>
                 {/* For shop */}
             <div className="cardHeader">
-                <h2 className="logo">For Shop &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>
+                <h2 className="logo">For Shop &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && <b className='order-number'> #{selectedBill.orderNumber}</b> }</h2>
             </div>
             <div className="cardBody">
-            {/* <div className="group">
-                    <span>Bill Number:</span>
+            <div className="group">
+                    <span>Invoice Number:</span>
                     <span><b>{selectedBill.billNumber}</b></span>
-                </div> */}
+                </div>
             { selectedBill.customerName !== "-----" && <div className="group">
                     <span>Customer Name:</span>
                     <span><b>{selectedBill.customerName}</b></span>
@@ -158,10 +190,23 @@ useEffect(() => {
             <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />
 
                 <div className="footerCardTotal">
+                {selectedBill.deliveryFee ?
+                    <div className="group">
+                        <p >Delivery Fee:</p>
+                        <p><b className="total">+ Rs {selectedBill?.deliveryFee}</b></p>
+                    </div>
+                    :
                     <div className="group">
                         <p >Service Tax:</p>
-                        <p><b className="total">+ {selectedBill.serviceTax}%</b></p>
+                        <p><b className="total">+ {selectedBill?.serviceTax}%</b></p>
                     </div>
+                }
+                {selectedBill.perHead !==0 &&
+                    <div className="group">
+                        <p >Per Head ({selectedBill.perHead}):</p>
+                        <p><b className="total">+ {selectedBill.perHead * 100}</b></p>
+                    </div>
+                }
                     <div className="group">
                         <p >Discount:</p>
                         <p><b className="total">- Rs {selectedBill.discount}</b></p>
@@ -174,11 +219,11 @@ useEffect(() => {
                 <div className="page-break"></div>
                 {/* For Chef */}
             <div className="cardHeader">
-                <h2 className="logo">For Chef &nbsp;&nbsp;&nbsp;&nbsp; {selectedBill.orderNumber && `#${selectedBill.orderNumber}` }</h2>
+                <h2 className="logo">For Chef &nbsp;&nbsp;&nbsp;&nbsp;  {selectedBill.orderNumber && <b className='order-number'>#{selectedBill.orderNumber}</b> } </h2>
             </div>  
             <Table columns={columns} dataSource={selectedBill.cartItems} pagination={false} size="small" />          
                 
-            </div>
+            </div>}
 
           <div className="bills-btn-add">
             <Button onClick={generateInvoiceClickHandle} htmlType='submit' className='add-new'>Generate Invoice</Button>

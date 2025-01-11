@@ -518,6 +518,23 @@ body::-webkit-scrollbar-thumb {
 .cardHeader span b{
   font-size: 12px;
 }
+.order-number{
+  border: 2px solid black;
+  padding: 0px 8px;
+}
+#generateInvoiveform > .ant-form-item{
+  margin: 0 0 8px !important;
+}
+.service-calc-dropdown{
+  margin: 20px 0px !important;
+  border-radius: 10px;
+}
+.tax-calc-amnt{
+  margin: auto;
+  font-size: 24px;
+  font-weight: 600;
+  text-decoration: underline;
+}
 @page {
   size: 80mm auto; /* Width fixed, height dynamic */
   margin: 0; /* No margins to fit the content */

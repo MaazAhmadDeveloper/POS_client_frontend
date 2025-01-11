@@ -78,7 +78,7 @@ const Reports = () => {
 
   const columns = [
     {
-      title: "Bill N0.",
+      title: "Invoice NO.",
       dataIndex: "billNumber"
     },
     {
@@ -123,7 +123,7 @@ const Reports = () => {
   ]
   const columnsForDownload = [
     {
-      title: "Bill N0.",
+      title: "Invoice NO.",
       dataIndex: "billNumber"
     },
     {

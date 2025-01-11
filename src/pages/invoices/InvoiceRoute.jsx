@@ -2,22 +2,25 @@ import { Select, Table } from 'antd';
 import axios from 'axios';
 import React, { useEffect, useState, useRef } from 'react'
 import ReactToPrint, { useReactToPrint } from 'react-to-print';
-import { EyeOutlined, PrinterOutlined } from '@ant-design/icons';
+import { EyeOutlined, PrinterOutlined, EditOutlined } from '@ant-design/icons';
 import { useDispatch } from 'react-redux';
 import Layout from '../../components/Layout'
 import Invoice from './Invoice';
 import { baseUrl } from '../../utils/url';
+import { useNavigate } from 'react-router-dom';
 
 const InvoicesRoute = () => {
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const componentRef = useRef();
   const [billsData, setBillsData] = useState([]);
   const [fullBillsData, setFullBillsData] = useState([]);
   const [searchInputValue, setSearchInputValue] = useState([]);
   const [popModal, setPopModal] = useState(false);
   const [selectedBill, setSelectedBill] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("Bill NO");
+  const [selectedCategory, setSelectedCategory] = useState("Invoice NO");
   const [shouldPrint, setShouldPrint] = useState(false);
+  
 
   const handlePrint = useReactToPrint({
     content: () => componentRef.current,
@@ -63,7 +66,7 @@ const InvoicesRoute = () => {
   useEffect(() => {
 
     switch (selectedCategory) {
-      case "Bill NO":
+      case "Invoice NO":
         return setBillsData(fullBillsData.filter((obj) => (obj.billNumber.toString().includes(searchInputValue))));
         // return setBillsData(fullBillsData.filter((obj) => (obj.totalAmount.toString().toLowerCase().includes(searchInputValue.toLowerCase()))));
     
@@ -89,7 +92,7 @@ const InvoicesRoute = () => {
 
   const columns = [
     {
-      title: "Bill N0.",
+      title: "Invoice N0.",
       dataIndex: "billNumber"
     },
     {
@@ -129,6 +132,7 @@ const InvoicesRoute = () => {
         <div style={{display:"flex", justifyContent: " space-around"}}>
           <EyeOutlined className='cart-edit eye' onClick={() => {setSelectedBill(record); setPopModal(true);}} />
           <PrinterOutlined className='cart-edit eye' onClick={() => {handlePrintClick(record);}} />
+          <EditOutlined className='cart-edit eye' onClick={() => {handleEditClick(record);}} />
         </div>
         
     }
@@ -152,6 +156,17 @@ const InvoicesRoute = () => {
         render: (data, allData) => data * allData.price
     }
   ]
+  const handleEditClick = (invoice)=>{
+
+    dispatch({
+      type: "EMPTY_CART", 
+    });
+    dispatch({
+      type: "SET_CART",
+      payload: invoice.cartItems.map((obj) => ({ ...obj, invoice: invoice }))
+  });
+  navigate("/")
+  }
   return (
     <Layout>
         <h2 style={{margin: 0}} >All Invoice </h2>
@@ -165,11 +180,11 @@ const InvoicesRoute = () => {
               />
                 <Select
                   placeholder="Search Via"
-                  // defaultValue="Bill No."
+                  // defaultValue="Invoice NO."
                   style={{ width: 200, marginLeft: 100 }}
                   onChange={(value) => setSelectedCategory(value)}
                 >
-                <Select.Option value="Bill NO">Bill N0.</Select.Option>
+                <Select.Option value="Invoice NO">Invoice N0.</Select.Option>
                 <Select.Option value="Customer Name">Customer Name</Select.Option>
                 <Select.Option value="Date">Date</Select.Option>
                 <Select.Option value="Contact Number">Contact Number</Select.Option>
@@ -195,10 +210,10 @@ const InvoicesRoute = () => {
                 <span><b>Baldia road, Baldia Plaza Bahawalnagar</b></span>
             </div>
             <div className="cardBody">
-                {/* <div className="group">
-                    <span>Bill Number:</span>
+                <div className="group">
+                    <span>Invoice Number:</span>
                     <span><b>{selectedBill?.billNumber}</b></span>
-                </div> */}
+                </div>
                 { selectedBill?.customerName !== "-----" && <div className="group">
                     <span>Customer Name:</span>
                     <span><b>{selectedBill?.customerName}</b></span>
@@ -232,11 +247,23 @@ const InvoicesRoute = () => {
                 <h4 className="YourOrderText">Your Order</h4>
             <Table columns={printColumns} dataSource={selectedBill?.cartItems} pagination={false} size="small" />
 
-                <div className="footerCardTotal">
+            <div className="footerCardTotal">
+                    {selectedBill?.deliveryFee ?
+                    <div className="group">
+                        <p >Delivery Fee:</p>
+                        <p><b className="total">+ Rs {selectedBill?.deliveryFee}</b></p>
+                    </div>
+                    :
                     <div className="group">
                         <p >Service Tax:</p>
                         <p><b className="total">+ {selectedBill?.serviceTax}%</b></p>
                     </div>
+                    }
+                    {selectedBill?.perHead !==0 &&
+                    <div className="group">
+                        <p >Per Head ({selectedBill?.perHead}):</p>
+                        <p><b className="total">+ {selectedBill?.perHead * 100}</b></p>
+                    </div>}
                     <div className="group">
                         <h3 >Discount:</h3>
                         <h3><b className="total">- Rs {selectedBill?.discount}</b></h3>
